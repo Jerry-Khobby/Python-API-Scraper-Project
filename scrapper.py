@@ -1,19 +1,12 @@
 import requests
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
 from email.mime.application import MIMEApplication
 from email import encoders
 import smtplib
 from xlwt import Workbook
-from email.utils import COMMASPACE,formatdate
+from email.utils import COMMASPACE, formatdate
 from os.path import basename
-
-
-
-
-
-#https://myaccount.google.com/lesssecureapps
 
 API_URL = "https://remoteok.com/api"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
@@ -53,22 +46,18 @@ def send_email(send_from, send_to, subject, text, files=None):
 
     for f in files or []:
         with open(f, "rb") as fil:
-            part = MIMEApplication(fil.read(),Name=basename(f))
-            part["Content-Disposition"]= f'attachment; filename="{basename(f)}"'
+            part = MIMEApplication(fil.read(), Name=basename(f))
+            part["Content-Disposition"] = f'attachment; filename="{basename(f)}"'
         msg.attach(part)
-    smtp=smtplib.SMTP('stmp.gmail.com:587')
+
+    smtp = smtplib.SMTP('smtp.gmail.com:587')  # Corrected SMTP server address
     smtp.starttls()
-    smtp.login(send_from,'priscillatola')
-    smtp.sendmail(send_from,send_to,msg.as_string())
+    smtp.login(send_from, '#######my email password')
+    smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.close()
-
-        
-
-
-
-
 
 if __name__ == "__main__":
     json_data = get_remote_ok_jobs()[1:]
     output_jobs_to_xls(json_data)
-    send_email("jerrymardeburg@gmail.com",["jerrymardeburg@gmail.com"],"Jobs Posting","Please find the attached a list of job posting to this  email",files=["Remote_jobs.xls"])
+    send_email("#####my email ", ["###receipient email"], "Jobs Posting",
+               "Please find the attached a list of job posting to this email", files=["Remote_jobs.xls"])
